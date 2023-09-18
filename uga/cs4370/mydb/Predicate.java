@@ -7,11 +7,9 @@ import java.util.List;
  * in relational algebra operators.
  */
 public interface Predicate {
-
-    /**
-     * Checks a row for a condition and returns true
-     * if the row passes the predicate.
-     */
-    public boolean check(List<Cell> row);
-    
+  /**
+   * Checks a row for a condition and returns true
+   * if the row passes the predicate.
+   */
+  public boolean check(List<Cell> row);
 }
