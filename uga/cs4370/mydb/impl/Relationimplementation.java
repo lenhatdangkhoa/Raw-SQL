@@ -4,10 +4,8 @@ import java.util.List;
 /* public class */
 import uga.cs4370.mydb.Cell;
 /* Interfaces */
-import uga.cs4370.mydb.Predicate;
-import uga.cs4370.mydb.RA;
+
 import uga.cs4370.mydb.Relation;
-import uga.cs4370.mydb.RelationBuilder;
 /* public enum */
 import uga.cs4370.mydb.Type;
 
@@ -20,8 +18,9 @@ Your implementation must use the interfaces as types whenever it is possible ins
 using concrete implementing classes as types. You can not use any external libraries in this
 project. You can use Java built in data structures.
  */
-public class implementation
-  implements Predicate, RA, Relation, RelationBuilder {
+public class Relationimplementation implements Relation {
+
+  Relationimplementation(String name, List<String> attrs, List<Type> types) {}
 
   public String getName() {}
 
@@ -42,6 +41,4 @@ public class implementation
   public void insert(List<Cell> cells) {}
 
   public void print() {}
-
-  public boolean check(List<Cell> row) {}
 }
