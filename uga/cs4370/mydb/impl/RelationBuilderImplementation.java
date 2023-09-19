@@ -22,17 +22,16 @@ public class RelationBuilderImplementation implements RelationBuilder {
     if (attrs.size() != types.size()) throw new IllegalArgumentException(
       "attrs and types have differen counts"
     );
-    if (!(alphanumeric(attrs))) throw new IllegalArgumentException(
+    if (!(checkValidity(attrs))) throw new IllegalArgumentException(
       "atts has empty or non-alphanumeric attribute names"
     );
     return new Relationimplementation(name, attrs, types);
   }
 
-  private boolean alphanumeric(List<String> attrs) {
+  // checks if String empty or non-alphanumerical
+  private boolean checkValidity(List<String> attrs) {
     for (int i = 0; i < attrs.size(); i++) {
-      if (
-        !(attrs.get(i).matches("/W")) || attrs.get(i).matches("")
-      ) return false; // if string doesn't have alphanumerical or is empty
+      if (!(attrs.get(i).matches("/W")) || attrs.get(i).isEmpty()) return false; // if string doesn't have alphanumerical or is empty
     }
     return true;
   }
