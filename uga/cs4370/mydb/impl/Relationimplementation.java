@@ -20,7 +20,15 @@ project. You can use Java built in data structures.
  */
 public class Relationimplementation implements Relation {
 
-  Relationimplementation(String name, List<String> attrs, List<Type> types) {}
+  private String name;
+  private List<String> attrs;
+  private List<Type> types;
+
+  Relationimplementation(String name, List<String> attrs, List<Type> types) {
+    this.name = name;
+    this.attrs = attrs;
+    this.types = types;
+  }
 
   public String getName() {}
 

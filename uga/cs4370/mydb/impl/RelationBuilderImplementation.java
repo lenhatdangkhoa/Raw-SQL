@@ -1,7 +1,6 @@
 package uga.cs4370.mydb.impl;
 
 import java.util.List;
-import java.util.regex.*;
 import uga.cs4370.mydb.Relation;
 import uga.cs4370.mydb.RelationBuilder;
 import uga.cs4370.mydb.Type;
@@ -26,7 +25,7 @@ public class RelationBuilderImplementation implements RelationBuilder {
     if (!(alphanumeric(attrs))) throw new IllegalArgumentException(
       "atts has empty or non-alphanumeric attribute names"
     );
-    return Relationimplementation(name, attrs, types);
+    return new Relationimplementation(name, attrs, types);
   }
 
   private boolean alphanumeric(List<String> attrs) {
