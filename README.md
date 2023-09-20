@@ -10,7 +10,7 @@ Khoa Le | khoa.le1@uga.edu
 
 Gage Roney | gage.roney@uga.edu
 
-Owen Na | owen.na@uga.edu
+Owen Na | osn53387@uga.edu
 
 ## How to run the project
 
