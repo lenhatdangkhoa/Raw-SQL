@@ -31,7 +31,7 @@ public class RelationBuilderImplementation implements RelationBuilder {
   // checks if String empty or non-alphanumerical
   private boolean checkValidity(List<String> attrs) {
     for (int i = 0; i < attrs.size(); i++) {
-      if (!(attrs.get(i).matches("/W")) || attrs.get(i).isEmpty()) return false; // if string doesn't have alphanumerical or is empty
+      if ((attrs.get(i).matches("/W")) || attrs.get(i).isEmpty()) return false; // if string doesn't have alphanumerical or is empty
     }
     return true;
   }
