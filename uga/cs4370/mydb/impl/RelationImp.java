@@ -5,16 +5,17 @@ import uga.cs4370.mydb.Type;
 import uga.cs4370.mydb.Cell;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.HashMap;
 
 public class RelationImp implements Relation {
 
     public String name;
     public int size;
-    public HashMap<String, HashMap<Type, List<Cell>>> table;
+    public LinkedHashMap<String, HashMap<Type, List<Cell>>> table;
 
     public RelationImp() {
-        table = new HashMap<>();
+        table = new LinkedHashMap<>();
     }
 
     @Override
