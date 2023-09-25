@@ -27,6 +27,8 @@ public class Main {
     list.add(new Cell("Khoa"));
     list.add(new Cell("Computer Science"));
     rel.insert(list);
+    rel.insert(list);
     rel.print();
+    System.out.println(rel.getAttrIndex("fnames"));
   }
 }
