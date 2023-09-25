@@ -5,16 +5,17 @@ import uga.cs4370.mydb.Type;
 import uga.cs4370.mydb.Cell;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.HashMap;
 
 public class RelationImp implements Relation {
 
     public String name;
     public int size;
-    public HashMap<String, HashMap<Type, List<Cell>>> table;
+    public LinkedHashMap<String, HashMap<Type, List<Cell>>> table;
 
     public RelationImp() {
-        table = new HashMap<>();
+        table = new LinkedHashMap<>();
     }
 
     @Override
@@ -93,48 +94,53 @@ public class RelationImp implements Relation {
     @Override
     public void insert(List<Cell> cells) {
         List<Type> types = this.getTypes();
+        if (cells.size() != types.size())
+            throw new IllegalArgumentException("incorrect format");
         int i = 0;
         int tempInt = 0;
         double tempDouble = 0.0;
         String tempString = "";
         System.out.println("here");
-        /*
-         * for (Cell cell : cells) {
-         * try {
-         * tempInt = cell.getAsInt();
-         * if (types.get(i) == Type.INTEGER) {
-         * i++;
-         * continue;
-         * } else {
-         * return;
-         * }
-         * 
-         * } catch (RuntimeException ex) {
-         * try {
-         * tempDouble = cell.getAsDouble();
-         * if (types.get(i) == Type.DOUBLE) {
-         * i++;
-         * continue;
-         * } else {
-         * return;
-         * }
-         * } catch (RuntimeException ex2) {
-         * try {
-         * tempString = cell.getAsString();
-         * if (types.get(i) == Type.STRING) {
-         * i++;
-         * continue;
-         * } else {
-         * return;
-         * }
-         * } catch (RuntimeException ex3) {
-         * System.err.println("Wrong format");
-         * }
-         * }
-         * }
-         * 
-         * }
-         */
+        for (Cell cell : cells) {
+            try {
+                tempInt = cell.getAsInt();
+
+                if (types.get(i) == Type.INTEGER) {
+                    i++;
+                    continue;
+                } else {
+                    throw new IllegalArgumentException("Wrong format");
+                }
+
+            } catch (RuntimeException ex) {
+                try {
+                    tempDouble = cell.getAsDouble();
+                    System.out.println("here2");
+
+                    if (types.get(i) == Type.DOUBLE) {
+                        i++;
+                        System.out.println("true");
+                        continue;
+                    } else {
+                        throw new IllegalArgumentException("Wrong format 2");
+                    }
+                } catch (RuntimeException ex2) {
+                    try {
+                        tempString = cell.getAsString();
+                        if (types.get(i) == Type.STRING) {
+                            i++;
+                            continue;
+                        } else {
+                            return;
+                        }
+                    } catch (RuntimeException ex3) {
+                        System.err.println("Wrong format");
+                    }
+                }
+            }
+
+        }
+
         System.out.println("before loop");
         int j = 0;
         for (String key : table.keySet()) {
