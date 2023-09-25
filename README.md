@@ -6,9 +6,9 @@ Elephant Trunk
 
 Steven Tran | st44121@uga.edu
 
-Khoa Le | khoa.le1@uga.edu
+Khoa Le | kl58277@uga.edu
 
-Gage Roney | gage.roney@uga.edu
+Gage Roney | gmr92094@uga.edu
 
 Owen Na | osn53387@uga.edu
 
