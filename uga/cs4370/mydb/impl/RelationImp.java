@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class RelationImp implements Relation {
 
     public String name;
-    public int size;
+    public int size = 0;
     public LinkedHashMap<String, HashMap<Type, List<Cell>>> table;
 
     public RelationImp() {
@@ -34,6 +34,7 @@ public class RelationImp implements Relation {
 
     @Override
     public int getSize() {
+
         return size;
     }
 
@@ -88,19 +89,22 @@ public class RelationImp implements Relation {
 
     @Override
     public void insert(Cell... cells) {
-
+        List<Cell> list = new ArrayList<>();
+        for (Cell cell : cells) {
+            list.add(cell);
+        }
+        this.insert(list);
     }
 
     @Override
     public void insert(List<Cell> cells) {
         List<Type> types = this.getTypes();
         if (cells.size() != types.size())
-            throw new IllegalArgumentException("incorrect format");
+            throw new IllegalArgumentException("Size of cells does not match size of attributes");
         int i = 0;
         int tempInt = 0;
         double tempDouble = 0.0;
         String tempString = "";
-        System.out.println("here");
         for (Cell cell : cells) {
             try {
                 tempInt = cell.getAsInt();
@@ -109,7 +113,7 @@ public class RelationImp implements Relation {
                     i++;
                     continue;
                 } else {
-                    throw new IllegalArgumentException("Wrong format");
+                    throw new IllegalArgumentException("Wrong format, not of type " + types.get(i));
                 }
 
             } catch (RuntimeException ex) {
@@ -119,7 +123,6 @@ public class RelationImp implements Relation {
 
                     if (types.get(i) == Type.DOUBLE) {
                         i++;
-                        System.out.println("true");
                         continue;
                     } else {
                         throw new IllegalArgumentException("Wrong format 2");
@@ -134,14 +137,12 @@ public class RelationImp implements Relation {
                             return;
                         }
                     } catch (RuntimeException ex3) {
-                        System.err.println("Wrong format");
+                        throw new IllegalArgumentException("Types do not match");
                     }
                 }
             }
 
         }
-
-        System.out.println("before loop");
         int j = 0;
         for (String key : table.keySet()) {
             HashMap<Type, List<Cell>> temp = table.get(key);
@@ -152,13 +153,47 @@ public class RelationImp implements Relation {
                 j++;
             }
             table.put(key, temp);
-
+        }
+        for (HashMap<Type, List<Cell>> map : table.values()) {
+            for (Type type : map.keySet()) {
+                this.size = map.get(type).size();
+                break;
+            }
         }
 
     }
 
     @Override
     public void print() {
-        System.out.println(this.table);
+        System.out.print("|");
+        int length = 0;
+        for (String key : table.keySet()) {
+            System.out.print(key + "    |");
+            length += key.length() + 5;
+        }
+        System.out.println();
+        for (int i = 0; i <= length; i++) {
+            System.out.print("_");
+        }
+        List<Type> types = getTypes();
+        List<String> keys = new ArrayList<>(table.keySet());
+        int j = 0;
+        System.out.println();
+        while (j < table.get(keys.get(0)).get(types.get(0)).size()) {
+            System.out.print("|");
+            for (int x = 0; x < types.size() - 1; x++) {
+                System.out.print(table.get(keys.get(x)).get(types.get(x)).get(j) + "\t|");
+                // System.out.print(table.get(keys.get(i++)).get(types.get(i++)).get(j));
+            }
+            System.out.print(table.get(keys.get(types.size() - 1)).get(types.get(types.size() - 1)).get(j));
+            System.out.println();
+            for (int i = 0; i <= length; i++) {
+                System.out.print("-");
+            }
+            System.out.println();
+
+            j++;
+        }
+        System.out.println();
     }
 }
