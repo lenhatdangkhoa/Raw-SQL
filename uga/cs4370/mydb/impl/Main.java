@@ -22,13 +22,11 @@ public class Main {
         Arrays.asList("ID", "fname", "lname", "major"),
         Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
     List<Cell> list = new ArrayList<>();
-    list.add(new Cell(1));
+    list.add(new Cell(1.2));
     list.add(new Cell("Le"));
     list.add(new Cell("Khoa"));
     list.add(new Cell("Computer Science"));
     rel.insert(list);
-    rel.insert(list);
     rel.print();
-    System.out.println(rel.getAttrIndex("fnames"));
   }
 }
