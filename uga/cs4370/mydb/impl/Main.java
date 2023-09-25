@@ -1,12 +1,14 @@
 package uga.cs4370.mydb.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import uga.cs4370.mydb.Cell;
+import uga.cs4370.mydb.RA;
 import uga.cs4370.mydb.Relation;
 import uga.cs4370.mydb.RelationBuilder;
 import uga.cs4370.mydb.Type;
-import uga.cs4370.mydb.Cell;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
+import uga.cs4370.mydb.impl.RAImp;
 
 /*After completing the implementation, you should create the schema from Assignment 1 using
 your own 'mydb' implementation and insert sample data into the schema. Then, implement the
@@ -18,9 +20,16 @@ public class Main {
 
   public static void main(String args[]) {
     RelationBuilder rb = new RelationBuilderImpl();
-    Relation rel = rb.newRelation("students",
-        Arrays.asList("ID", "fname", "lname", "major"),
-        Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
+    Relation rel = rb.newRelation(
+      "students",
+      Arrays.asList("ID", "fname", "lname", "major"),
+      Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING)
+    );
+    Relation rel2 = rb.newRelation(
+      "students",
+      Arrays.asList("ID", "fname", "lname", "major"),
+      Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING)
+    );
     List<Cell> list1 = new ArrayList<>();
     list1.add(new Cell(1));
     list1.add(new Cell("Le"));
@@ -33,9 +42,24 @@ public class Main {
     list2.add(new Cell("Steven"));
     list2.add(new Cell("Women's Studies"));
     rel.insert(list2);
-    rel.insert(new Cell(3), new Cell("Roney"), new Cell("Gage"), new Cell("Men's Studies"));
-    rel.print();
+    rel.insert(
+      new Cell(3),
+      new Cell("Roney"),
+      new Cell("Gage"),
+      new Cell("Men's Studies")
+    );
+    //rel.print();
 
-    System.out.println(rel.getSize());
+    //System.out.println(rel.getSize());
+    List<Cell> list3 = new ArrayList<>();
+    list3.add(new Cell(4));
+    list3.add(new Cell("Nigger"));
+    list3.add(new Cell("Le"));
+    list3.add(new Cell("Basketball"));
+    rel2.insert(list3);
+    rel2.print();
+    RA ra = new RAImp();
+    Relation test = ra.union(rel, rel2);
+    test.print();
   }
 }
