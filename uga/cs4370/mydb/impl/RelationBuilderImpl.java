@@ -10,12 +10,14 @@ import java.util.List;
 
 public class RelationBuilderImpl implements RelationBuilder {
     public Relation newRelation(String name, List<String> attrs, List<Type> types) {
-        if (name == null)
+        if (name == null || name.length() == 0)
             throw new IllegalArgumentException("Empty name");
         else if (attrs == null || types == null)
-            throw new IllegalArgumentException("Wrong format");
+            throw new IllegalArgumentException("Wrong format for attributes and types");
+        else if (!checkValidity(attrs))
+            throw new IllegalArgumentException("include non alphanumerical characters");
         else if (attrs.size() != types.size())
-            throw new IllegalArgumentException("attrs and types don't match length");
+            throw new IllegalArgumentException("attributes and types's length don't match");
         RelationImp rel = new RelationImp();
         rel.setName(name);
         for (int i = 0; i < attrs.size(); i++) {
@@ -24,5 +26,13 @@ public class RelationBuilderImpl implements RelationBuilder {
             rel.table.put(attrs.get(i), map);
         }
         return rel;
+    }
+
+    private boolean checkValidity(List<String> attrs) {
+        for (int i = 0; i < attrs.size(); i++) {
+            if ((!attrs.get(i).matches("^[a-zA-Z0-9]+")) || attrs.get(i).isEmpty())
+                return false; // if string doesn't have alphanumerical or is empty
+        }
+        return true;
     }
 }
