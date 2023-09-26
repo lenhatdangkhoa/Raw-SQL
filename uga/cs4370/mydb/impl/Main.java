@@ -53,7 +53,7 @@ public class Main {
     //System.out.println(rel.getSize());
     List<Cell> list3 = new ArrayList<>();
     list3.add(new Cell(4));
-    list3.add(new Cell("Nigger"));
+    list3.add(new Cell("Osen"));
     list3.add(new Cell("Le"));
     list3.add(new Cell("Basketball"));
     rel2.insert(list3);
