@@ -50,43 +50,20 @@ public class RAImp implements RA {
     public Relation union(Relation rel1, Relation rel2) {
         if (rel1 == null || rel2 == null)
             throw new RuntimeException("Relation is null");
-        List<String> rel = new ArrayList<>();
-        List<Type> types = new ArrayList<>();
-        List<String> tempAttr = rel1.getAttrs();
-        List<Type> tempType = rel1.getTypes();
-        for (int i = 0; i < tempAttr.size(); i++) {
-            rel.add(tempAttr.get(i));
-            types.add(tempType.get(i));
+        else if (rel1.getAttrs().size() != rel2.getAttrs().size()) {
+            throw new RuntimeException("Relations'length do not match");
+
         }
-        tempAttr = rel2.getAttrs();
-        tempType = rel2.getTypes();
-        for (int i = 0, j = 0; i < tempAttr.size() && j < tempType.size(); i++, j++) {
-            if (!rel.contains(tempAttr.get(i))) {
-                rel.add(tempAttr.get(i));
-                types.add(tempType.get(j));
-            }
-        }
+
         RelationBuilder rb = new RelationBuilderImpl();
-        Relation relation = rb.newRelation("New Relation", rel, types);
-        List<List<Cell>> list = rel1.getRows(); // List<List<Cell>>
-        int i = 0;
-        while (i < list.get(0).size()) {
-            List<Cell> temp = new ArrayList<>();
-            for (int j = 0; j < list.size(); j++) {
-                temp.add(list.get(j).get(i));
-            }
-            relation.insert(temp);
-            i++;
+        Relation relation = rb.newRelation("New Relation", rel1.getAttrs(), rel1.getTypes());
+        for (List<Cell> row : rel1.getRows()) {
+            if (!relation.getRows().contains(row))
+                relation.insert(row);
         }
-        List<List<Cell>> list2 = rel2.getRows(); // List<List<Cell>>
-        int x = 0;
-        while (x < list2.get(0).size()) {
-            List<Cell> temp = new ArrayList<>();
-            for (int j = 0; j < list2.size(); j++) {
-                temp.add(list2.get(j).get(x));
-            }
-            relation.insert(temp);
-            x++;
+        for (List<Cell> row : rel2.getRows()) {
+            if (!relation.getRows().contains(row))
+                relation.insert(row);
         }
         return relation;
     }
