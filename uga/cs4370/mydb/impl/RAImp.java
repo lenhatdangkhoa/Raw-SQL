@@ -50,43 +50,20 @@ public class RAImp implements RA {
     public Relation union(Relation rel1, Relation rel2) {
         if (rel1 == null || rel2 == null)
             throw new RuntimeException("Relation is null");
-        List<String> rel = new ArrayList<>();
-        List<Type> types = new ArrayList<>();
-        List<String> tempAttr = rel1.getAttrs();
-        List<Type> tempType = rel1.getTypes();
-        for (int i = 0; i < tempAttr.size(); i++) {
-            rel.add(tempAttr.get(i));
-            types.add(tempType.get(i));
+        else if (rel1.getAttrs().size() != rel2.getAttrs().size()) {
+            throw new RuntimeException("Relations'length do not match");
+
         }
-        tempAttr = rel2.getAttrs();
-        tempType = rel2.getTypes();
-        for (int i = 0, j = 0; i < tempAttr.size() && j < tempType.size(); i++, j++) {
-            if (!rel.contains(tempAttr.get(i))) {
-                rel.add(tempAttr.get(i));
-                types.add(tempType.get(j));
-            }
-        }
+
         RelationBuilder rb = new RelationBuilderImpl();
-        Relation relation = rb.newRelation("New Relation", rel, types);
-        List<List<Cell>> list = rel1.getRows(); // List<List<Cell>>
-        int i = 0;
-        while (i < list.get(0).size()) {
-            List<Cell> temp = new ArrayList<>();
-            for (int j = 0; j < list.size(); j++) {
-                temp.add(list.get(j).get(i));
-            }
-            relation.insert(temp);
-            i++;
+        Relation relation = rb.newRelation("New Relation", rel1.getAttrs(), rel1.getTypes());
+        for (List<Cell> row : rel1.getRows()) {
+            if (!relation.getRows().contains(row))
+                relation.insert(row);
         }
-        List<List<Cell>> list2 = rel2.getRows(); // List<List<Cell>>
-        int x = 0;
-        while (x < list2.get(0).size()) {
-            List<Cell> temp = new ArrayList<>();
-            for (int j = 0; j < list2.size(); j++) {
-                temp.add(list2.get(j).get(x));
-            }
-            relation.insert(temp);
-            x++;
+        for (List<Cell> row : rel2.getRows()) {
+            if (!relation.getRows().contains(row))
+                relation.insert(row);
         }
         return relation;
     }
@@ -101,68 +78,21 @@ public class RAImp implements RA {
     public Relation diff(Relation rel1, Relation rel2) {
         if (rel1 == null || rel2 == null)
             throw new RuntimeException("Relation is null");
-        List<List<Cell>> list1 = rel1.getRows();
-        List<List<Cell>> list2 = rel2.getRows();
-        List<List<Cell>> newList = new ArrayList<>();
-        List<List<Cell>> tempList = new ArrayList<>();
-        int x = 0;
-        while (x < list1.get(0).size()) {
-            List<Cell> tempList2 = new ArrayList<>();
-            for (int j = 0; j < list1.size(); j++) {
-                tempList2.add(list1.get(j).get(x));
-            }
-            if (list1.contains(tempList2)) {
-                list1.remove(tempList2);
-                list2.remove(tempList2);
-            } else {
-                newList.add(tempList2);
-            }
-            x++;
+        else if (rel1.getAttrs().size() != rel2.getAttrs().size()) {
+            throw new RuntimeException("Relations'length do not match");
         }
-        // System.out.println(newList);
-        /*
-         * for (List<Cell> temp : list2) {
-         * System.out.println("temp " + temp);
-         * if (list1.contains(temp)) {
-         * list1.remove(temp);
-         * list2.remove(temp);
-         * } else {
-         * newList.add(temp);
-         * }
-         * }
-         */
-        RelationBuilder ra = new RelationBuilderImpl();
-        Relation res = ra.newRelation("New Relation", rel1.getAttrs(), rel1.getTypes());
-        // System.out.println(list1);
-        int i = 0;
-        while (i < list1.get(0).size()) {
-            List<Cell> temp = new ArrayList<>();
-            // System.out.println(list1.size());
-            for (int j = 0; j < list1.size(); j++) {
-                temp.add(list1.get(j).get(i));
+        RelationBuilder rb = new RelationBuilderImpl();
+        Relation relation = rb.newRelation("New Relation", rel1.getAttrs(), rel1.getTypes());
+        List<List<Cell>> temp = rel1.getRows();
+        for (List<Cell> row : rel2.getRows()) {
+            if (temp.contains(row)) {
+                temp.remove(row);
             }
-            // System.out.println(temp);
-            res.insert(temp);
-            i++;
         }
-        i = 0;
-        while (i < newList.get(0).size()) {
-            List<Cell> temp = new ArrayList<>();
-            // System.out.println(list1.size());
-            for (int j = 0; j < newList.size(); j++) {
-                temp.add(newList.get(j).get(i));
-            }
-            // System.out.println(temp);
-            // System.out.println(temp);
-            res.insert(temp);
-            i++;
+        for (List<Cell> row : temp) {
+            relation.insert(row);
         }
-        return res;
-    }
-
-    private boolean checkCell(List<Cell> cells) {
-
-        return true;
+        return relation;
     }
 
     /**
