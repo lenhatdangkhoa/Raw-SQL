@@ -61,21 +61,8 @@ public class Main {
     list4.add(new Cell("Gage"));
     list4.add(new Cell("Men's Studies"));
     rel2.insert(list4);
-    // RA ra = new RAImp();
-    // Relation test = ra.diff(rel, rel2);
-    // test.print();
-    rel.print();
-    rel2.print();
-    System.out.println(rel.getRows());
-    System.out.println(rel.getAttrs());
-    List<String> test = new ArrayList<>();
-    test.add("fname");
-    test.add("lname");
-    List<String> test2 = new ArrayList<>();
-    test2.add("FNAME");
-    test2.add("LNAME");
     RA ra = new RAImp();
-    Relation test3 = ra.rename(rel, test, test2);
-    test3.print();
+    Relation test = ra.diff(rel, rel2);
+    test.print();
   }
 }
