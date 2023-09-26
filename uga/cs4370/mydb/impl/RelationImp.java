@@ -1,12 +1,12 @@
 package uga.cs4370.mydb.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import uga.cs4370.mydb.Cell;
 import uga.cs4370.mydb.Relation;
 import uga.cs4370.mydb.Type;
-import uga.cs4370.mydb.Cell;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedHashMap;
-import java.util.HashMap;
 
 public class RelationImp implements Relation {
 
@@ -25,7 +25,7 @@ public class RelationImp implements Relation {
 
     /**
      * Set name of the relation.
-     * 
+     *
      * @param name
      */
     public void setName(String name) {
@@ -34,20 +34,25 @@ public class RelationImp implements Relation {
 
     @Override
     public int getSize() {
-
         return size;
     }
 
     @Override
     public List<List<Cell>> getRows() {
         List<List<Cell>> deepCopy = new ArrayList<List<Cell>>();
-        for (HashMap<Type, List<Cell>> map : table.values()) {
-            for (List<Cell> cells : map.values()) {
-                deepCopy.add(cells);
+        List<String> attrs = getAttrs();
+        List<Type> types = getTypes();
+        int i = 0;
+        while (i < size) {
+            List<Cell> temp = new ArrayList<>();
+            for (int j = 0; j < attrs.size(); j++) {
+                temp.add(table.get(attrs.get(j)).get(types.get(j)).get(i));
             }
+            deepCopy.add(temp);
+            i++;
         }
-        return deepCopy;
 
+        return deepCopy;
     }
 
     @Override
@@ -100,7 +105,8 @@ public class RelationImp implements Relation {
     public void insert(List<Cell> cells) {
         List<Type> types = this.getTypes();
         if (cells.size() != types.size())
-            throw new IllegalArgumentException("Size of cells does not match size of attributes");
+            throw new IllegalArgumentException(
+                    "Size of cells does not match size of attributes");
         int i = 0;
         int tempInt = 0;
         double tempDouble = 0.0;
@@ -113,14 +119,12 @@ public class RelationImp implements Relation {
                     i++;
                     continue;
                 } else {
-                    throw new IllegalArgumentException("Wrong format, not of type " + types.get(i));
+                    throw new IllegalArgumentException(
+                            "Wrong format, not of type " + types.get(i));
                 }
-
             } catch (RuntimeException ex) {
                 try {
                     tempDouble = cell.getAsDouble();
-                    System.out.println("here2");
-
                     if (types.get(i) == Type.DOUBLE) {
                         i++;
                         continue;
@@ -141,7 +145,6 @@ public class RelationImp implements Relation {
                     }
                 }
             }
-
         }
         int j = 0;
         for (String key : table.keySet()) {
@@ -160,7 +163,6 @@ public class RelationImp implements Relation {
                 break;
             }
         }
-
     }
 
     @Override
@@ -182,10 +184,15 @@ public class RelationImp implements Relation {
         while (j < table.get(keys.get(0)).get(types.get(0)).size()) {
             System.out.print("|");
             for (int x = 0; x < types.size() - 1; x++) {
-                System.out.print(table.get(keys.get(x)).get(types.get(x)).get(j) + "\t|");
+                System.out.print(
+                        table.get(keys.get(x)).get(types.get(x)).get(j) + "\t|");
                 // System.out.print(table.get(keys.get(i++)).get(types.get(i++)).get(j));
             }
-            System.out.print(table.get(keys.get(types.size() - 1)).get(types.get(types.size() - 1)).get(j));
+            System.out.print(
+                    table
+                            .get(keys.get(types.size() - 1))
+                            .get(types.get(types.size() - 1))
+                            .get(j));
             System.out.println();
             for (int i = 0; i <= length; i++) {
                 System.out.print("-");

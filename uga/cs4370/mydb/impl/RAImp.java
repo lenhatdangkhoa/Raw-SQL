@@ -89,7 +89,9 @@ public class RAImp {
     public Relation join(Relation rel1, Relation rel2) {
         RelationImp output = new RelationImp();
         List<String> commonColumns = findCommonColumns(rel1, rel2);
-        for (String attr : rel1.getAttrs()) {
+        for (List<Cell> attr : rel1.getRows()) {
+            for ()
+
             if (!commonColumns.contains(attr)) {
                 output.copyColumn(attr, rel1);
             }
@@ -111,6 +113,9 @@ public class RAImp {
 
     // helper function to find common relations
     private List<String> findCommonColumns(Relation rel1, Relation rel2) {
+        if (rel1 == null || rel2 == null) {
+            throw new RuntimeException("Relation is null");
+        }
         List<String> commonColumns = new ArrayList<>();
         for (String attr1 : rel1.getAttrs()) {
             if (rel2.hasAttr(attr1)) {
@@ -122,11 +127,11 @@ public class RAImp {
 
     private void copyColumn(String columnName, Relation source) {
         for (List<Cell> row : source.getRows()) {
-            Cell cell = source.getRows(source.getAttrIndex(columnName));
+            Cell cell = source.getRows();
             this.insert(cell);
         }
     }
-    
+
     private void mergeRows(List<Cell> row1, List<Cell> row2) {
 
     }
