@@ -59,7 +59,10 @@ public class Main {
     list4.add(new Cell("Men's Studies"));
     rel2.insert(list4);
     RA ra = new RAImp();
-    Relation test = ra.diff(rel, rel2);
+    List<String> attrs = new ArrayList<>();
+    attrs.add("fname");
+    attrs.add("lname");
+    Relation test = ra.project(rel, attrs);
     test.print();
   }
 }
