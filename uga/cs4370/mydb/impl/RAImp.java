@@ -3,11 +3,12 @@ package uga.cs4370.mydb.impl;
 import java.util.List;
 
 import uga.cs4370.mydb.Relation;
+import uga.cs4370.mydb.RA;
 import uga.cs4370.mydb.Predicate;
 import uga.cs4370.mydb.impl.RelationImp;
 import java.util.List;
 
-public class RAImp {
+public class RAImp implements RA {
     /**
      * Performs the select operation on the relation rel
      * by applying the predicate p.
@@ -15,6 +16,7 @@ public class RAImp {
      * @return The resulting relation after applying the select operation.
      */
     public Relation select(Relation rel, Predicate p) {
+
         return null;
     }
 
@@ -63,11 +65,18 @@ public class RAImp {
      *                                  rel or origAttr and renamedAttr do not have
      *                                  matching argument counts.
      */
-    public Relation rename(
-            Relation rel,
-            List<String> origAttr,
-            List<String> renamedAttr) {
-        return null;
+    public Relation rename(Relation rel, List<String> origAttr, List<String> renamedAttr) {
+
+        Relation newRel = new RelationImp();
+
+        if (origAttr.size() != renamedAttr.size()) {
+            throw new IllegalArgumentException("Original attribute and renamed attributes are not the same size and must match.");
+        }
+
+        // We need to loop through each row of the relation 
+        // 
+
+        return newRel; // returns the new relation after renaming attributes
     }
 
     /**
