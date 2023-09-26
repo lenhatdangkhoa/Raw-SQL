@@ -103,9 +103,7 @@ public class RAImp implements RA {
    *
    * @throws IllegalArgumentException If rel1 and rel2 are not compatible.
    */
-  public Relation diff(Relation rel1, Relation rel2) {
-    return null;
-  }
+  public Relation diff(Relation rel1, Relation rel2) {}
 
   /**
    * Renames the attributes in origAttr of relation rel to corresponding
