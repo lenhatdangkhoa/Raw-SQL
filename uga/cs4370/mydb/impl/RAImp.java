@@ -1,11 +1,11 @@
 package uga.cs4370.mydb.impl;
 
 import java.util.List;
-
 import uga.cs4370.mydb.Relation;
 import uga.cs4370.mydb.Predicate;
 import uga.cs4370.mydb.impl.RelationImp;
-import java.util.List;
+import uga.cs4370.mydb.Cell;
+import java.util.ArrayList;
 
 public class RAImp {
     /**
@@ -87,7 +87,48 @@ public class RAImp {
      * @return The resulting relation after applying natural join.
      */
     public Relation join(Relation rel1, Relation rel2) {
-        return null;
+        RelationImp output = new RelationImp();
+        List<String> commonColumns = findCommonColumns(rel1, rel2);
+        for (String attr : rel1.getAttrs()) {
+            if (!commonColumns.contains(attr)) {
+                output.copyColumn(attr, rel1);
+            }
+        }
+        for (String attr : rel2.getAttrs()) {
+            if (!commonColumns.contains(attr)) {
+                output.copyColumn(attr, rel2);
+            }
+        }
+        for (List<Cell> row1 : rel1.getRows()) {
+            for (List<Cell> row2 : rel2.getRows()) {
+                if (matchRows(row1, row2, commonColumns)) { // surely a better check can be done here, just combine all rows proeprly here
+                    output.mergeRows(row1, row2);
+                }
+            }
+        }
+        return output;
+    }
+
+    // helper function to find common relations
+    private List<String> findCommonColumns(Relation rel1, Relation rel2) {
+        List<String> commonColumns = new ArrayList<>();
+        for (String attr1 : rel1.getAttrs()) {
+            if (rel2.hasAttr(attr1)) {
+                commonColumns.add(attr1);
+            }
+        }
+        return commonColumns;
+    }
+
+    private void copyColumn(String columnName, Relation source) {
+        for (List<Cell> row : source.getRows()) {
+            Cell cell = source.getRows(source.getAttrIndex(columnName));
+            this.insert(cell);
+        }
+    }
+    
+    private void mergeRows(List<Cell> row1, List<Cell> row2) {
+
     }
 
     /**
@@ -96,6 +137,7 @@ public class RAImp {
      * @return The resulting relation after applying theta join.
      */
     public Relation join(Relation rel1, Relation rel2, Predicate p) {
+
         return null;
     }
 }
