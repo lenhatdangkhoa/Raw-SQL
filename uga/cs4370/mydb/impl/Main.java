@@ -21,15 +21,13 @@ public class Main {
   public static void main(String args[]) {
     RelationBuilder rb = new RelationBuilderImpl();
     Relation rel = rb.newRelation(
-      "students",
-      Arrays.asList("ID", "fname", "lname", "major"),
-      Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING)
-    );
+        "students",
+        Arrays.asList("ID", "fname", "lname", "major"),
+        Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
     Relation rel2 = rb.newRelation(
-      "students",
-      Arrays.asList("ID", "fname", "lname", "major"),
-      Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING)
-    );
+        "students",
+        Arrays.asList("ID", "fname", "lname", "major"),
+        Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
     List<Cell> list1 = new ArrayList<>();
     list1.add(new Cell(1));
     list1.add(new Cell("Le"));
@@ -43,23 +41,28 @@ public class Main {
     list2.add(new Cell("Women's Studies"));
     rel.insert(list2);
     rel.insert(
-      new Cell(3),
-      new Cell("Roney"),
-      new Cell("Gage"),
-      new Cell("Men's Studies")
-    );
-    //rel.print();
+        new Cell(3),
+        new Cell("Roney"),
+        new Cell("Gage"),
+        new Cell("Men's Studies"));
 
-    //System.out.println(rel.getSize());
     List<Cell> list3 = new ArrayList<>();
     list3.add(new Cell(4));
-    list3.add(new Cell("Nigger"));
+    list3.add(new Cell("Nega"));
     list3.add(new Cell("Le"));
     list3.add(new Cell("Basketball"));
     rel2.insert(list3);
+    List<Cell> list4 = new ArrayList<>();
+    list4.add(new Cell(3));
+    list4.add(new Cell("Roney"));
+    list4.add(new Cell("Gage"));
+    list4.add(new Cell("Men's Studies"));
+    rel2.insert(list4);
+    // RA ra = new RAImp();
+    // Relation test = ra.diff(rel, rel2);
+    // test.print();
+    rel.print();
     rel2.print();
-    RA ra = new RAImp();
-    Relation test = ra.union(rel, rel2);
-    test.print();
+    System.out.println(rel.getRows());
   }
 }
