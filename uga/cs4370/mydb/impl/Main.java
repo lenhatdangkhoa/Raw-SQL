@@ -59,7 +59,7 @@ public class Main {
     list4.add(new Cell("Men's Studies"));
     rel2.insert(list4);
     RA ra = new RAImp();
-    Relation test = ra.union(rel, rel2);
+    Relation test = ra.diff(rel, rel2);
     test.print();
   }
 }
