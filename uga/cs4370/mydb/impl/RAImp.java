@@ -25,7 +25,18 @@ public class RAImp implements RA {
    * @return The resulting relation after applying the select operation.
    */
   public Relation select(Relation rel, Predicate p) {
-    return null;
+    RelationBuilder ra = new RelationBuilderImpl();
+    Relation relation = ra.newRelation(
+      rel.getName(),
+      rel.getAttrs(),
+      rel.getTypes()
+    );
+    for (List<Cell> list : rel.getRows()) {
+      if (p.check(list)) {
+        relation.insert(list);
+      }
+    }
+    return relation;
   }
 
   /**
@@ -38,7 +49,49 @@ public class RAImp implements RA {
    *                                  present in rel.
    */
   public Relation project(Relation rel, List<String> attrs) {
-    return null;
+    List<String> attList = rel.getAttrs();
+    List<Type> typeList = rel.getTypes();
+    for (String att : attrs) {
+      if (!rel.hasAttr((att))) {
+        throw new IllegalArgumentException("Attributes not found");
+      }
+    }
+    List<String> newList = new ArrayList<>();
+    List<Type> newTypes = new ArrayList<>();
+    List<List<Cell>> tempTemp = new ArrayList<>();
+    // System.out.println(rel.getRows().get(0));
+    for (String temp : attrs) {
+      if (attList.contains(temp)) {
+        newList.add(temp);
+        newTypes.add(typeList.get(attList.indexOf(temp)));
+        List<Cell> tempTempTemp = new ArrayList<>();
+        for (int i = 0; i < rel.getSize(); i++) {
+          tempTempTemp.add(rel.getRows().get(i).get(attList.indexOf(temp)));
+        }
+        tempTemp.add(tempTempTemp);
+      }
+    }
+
+    // System.out.println(tempTemp);
+    RelationBuilder ra = new RelationBuilderImpl();
+    Relation res = ra.newRelation("New relation", newList, newTypes);
+
+    // System.out.println(res.getAttrs());
+    // System.out.println(res.getTypes());
+    int i = 0;
+    List<List<Cell>> resList = new ArrayList<>();
+    while (i < tempTemp.get(0).size()) {
+      List<Cell> ttttInverse = new ArrayList<>();
+      for (int j = 0; j < tempTemp.size(); j++) {
+        ttttInverse.add(tempTemp.get(j).get(i));
+      }
+      resList.add(ttttInverse);
+      i++;
+    }
+    for (List<Cell> temp : resList) {
+      res.insert(temp);
+    }
+    return res;
   }
 
   /**
