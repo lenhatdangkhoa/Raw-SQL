@@ -21,13 +21,15 @@ public class Main {
   public static void main(String args[]) {
     RelationBuilder rb = new RelationBuilderImpl();
     Relation rel = rb.newRelation(
-        "students",
-        Arrays.asList("ID", "fname", "lname", "major"),
-        Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
+      "students",
+      Arrays.asList("ID", "fname", "lname", "major"),
+      Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING)
+    );
     Relation rel2 = rb.newRelation(
-        "students",
-        Arrays.asList("ID", "fname", "lname", "major"),
-        Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
+      "students",
+      Arrays.asList("ID", "fname", "lname", "major"),
+      Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING)
+    );
     List<Cell> list1 = new ArrayList<>();
     list1.add(new Cell(1));
     list1.add(new Cell("Le"));
@@ -41,10 +43,11 @@ public class Main {
     list2.add(new Cell("Women's Studies"));
     rel.insert(list2);
     rel.insert(
-        new Cell(3),
-        new Cell("Roney"),
-        new Cell("Gage"),
-        new Cell("Men's Studies"));
+      new Cell(3),
+      new Cell("Roney"),
+      new Cell("Gage"),
+      new Cell("Men's Studies")
+    );
 
     List<Cell> list3 = new ArrayList<>();
     list3.add(new Cell(4));
