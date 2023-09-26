@@ -48,18 +48,24 @@ public class Main {
       new Cell("Gage"),
       new Cell("Men's Studies")
     );
-    //rel.print();
 
-    //System.out.println(rel.getSize());
     List<Cell> list3 = new ArrayList<>();
     list3.add(new Cell(4));
-    list3.add(new Cell("Osen"));
+    list3.add(new Cell("Nega"));
     list3.add(new Cell("Le"));
     list3.add(new Cell("Basketball"));
     rel2.insert(list3);
+    List<Cell> list4 = new ArrayList<>();
+    list4.add(new Cell(3));
+    list4.add(new Cell("Roney"));
+    list4.add(new Cell("Gage"));
+    list4.add(new Cell("Men's Studies"));
+    rel2.insert(list4);
+    // RA ra = new RAImp();
+    // Relation test = ra.diff(rel, rel2);
+    // test.print();
+    rel.print();
     rel2.print();
-    RA ra = new RAImp();
-    Relation test = ra.union(rel, rel2);
-    test.print();
+    System.out.println(rel.getRows());
   }
 }
