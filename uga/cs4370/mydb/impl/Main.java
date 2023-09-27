@@ -40,7 +40,6 @@ public class Main {
                 "Teaches",
                 Arrays.asList("TeachID", "ProfessorID", "CourseID"),
                 Arrays.asList(Type.INTEGER, Type.INTEGER, Type.INTEGER));
-
         List<Cell> list1 = new ArrayList<>();
         list1.add(new Cell(1234));
         list1.add(new Cell("John"));
@@ -53,27 +52,26 @@ public class Main {
                 new Cell("Le"),
                 new Cell("2003-05-06"),
                 new Cell("computer science"));
-        student.insert(new Cell(3),
+        student.insert(new Cell(300),
                 new Cell("Gage"),
                 new Cell("Roney"),
                 new Cell("2001-02-02"),
                 new Cell("computer science"));
-        student.insert(new Cell(45),
+        student.insert(new Cell(445),
                 new Cell("Owen"),
                 new Cell("Na"),
                 new Cell("2003-04-12"),
                 new Cell("english"));
-        student.insert(new Cell(60),
+        student.insert(new Cell(610),
                 new Cell("Sammy"),
                 new Cell("Beard"),
                 new Cell("2003-08-12"),
                 new Cell("women studies"));
-        student.insert(new Cell(5),
+        student.insert(new Cell(95),
                 new Cell("Steven"),
                 new Cell("Tran"),
                 new Cell("2000-07-01"),
                 new Cell("computer science"));
-        // student.print();
         course.insert(new Cell(101),
                 new Cell("Intro to Finance"),
                 new Cell(3));
@@ -116,7 +114,7 @@ public class Main {
                 new Cell(102),
                 new Cell("B"));
         enrollment.insert(new Cell(3),
-                new Cell(3),
+                new Cell(300),
                 new Cell(103),
                 new Cell("A"));
         enrollment.insert(new Cell(4),
@@ -124,7 +122,7 @@ public class Main {
                 new Cell(104),
                 new Cell("F"));
         enrollment.insert(new Cell(5),
-                new Cell(5),
+                new Cell(95),
                 new Cell(102),
                 new Cell("F"));
         teach.insert(new Cell(301),
@@ -140,15 +138,136 @@ public class Main {
                 new Cell(204),
                 new Cell(104));
 
-        teach.insert(new Cell(304),
-                new Cell(204),
-                new Cell(104));
         student.print();
         course.print();
         professor.print();
         teach.print();
         enrollment.print();
-
+        List<String> wantedAttrs = new ArrayList<>();
         RA ra = new RAImp();
+        System.out.println("Retrieve all course IDs a student with ID 1234 has enrolled in");
+        Relation relation = ra.select(enrollment, n -> {
+            if (n.get(1).getAsInt() == 1234) {
+                return true;
+            } else
+                return false;
+        });
+        wantedAttrs.add("CourseID");
+        relation = ra.project(relation, wantedAttrs);
+        wantedAttrs.clear();
+        relation.print();
+        System.out.println("All student names and ids who major in computer science");
+        relation = ra.select(student, n -> {
+            if (n.get(4).getAsString().equals("computer science")) {
+                return true;
+            } else
+                return false;
+        });
+        wantedAttrs.addAll(Arrays.asList("StudentID", "FName", "LName"));
+        relation = ra.project(relation, wantedAttrs);
+        relation.print();
+        wantedAttrs.clear();
+        System.out.println("Retrieve all course names a student with ID 1234 has enrolled in");
+        Relation newRelation = ra.join(course, enrollment);
+        relation = ra.select(newRelation, n -> {
+            if (n.get(4).getAsInt() == 1234) {
+                return true;
+            } else
+                return false;
+        });
+        wantedAttrs.add("CName");
+        relation = ra.project(relation, wantedAttrs);
+        relation.print();
+        wantedAttrs.clear();
+        System.out.println("List of professor names and IDs who teach courses of more than 2 credits");
+
+        newRelation = ra.join(teach, professor);
+        newRelation = ra.join(newRelation, course);
+        relation = ra.select(newRelation, n -> {
+            if (n.get(7).getAsInt() > 2) {
+                return true;
+            } else
+                return false;
+        });
+        wantedAttrs.addAll(Arrays.asList("FName", "LName"));
+        relation = ra.project(relation, wantedAttrs);
+        relation.print();
+        wantedAttrs.clear();
+        System.out.println("Student names and ids who have not enrolled in any course");
+        relation = ra.select(student, n -> {
+            List<Cell> temp = new ArrayList<>();
+            for (int i = 0; i < enrollment.getRows().size(); i++) {
+                temp.add(enrollment.getRows().get(i).get(1));
+            }
+            if (!temp.contains(n.get(0))) {
+                return true;
+            }
+            return false;
+
+        });
+        wantedAttrs.addAll(Arrays.asList("StudentID", "FName", "LName"));
+        relation = ra.project(relation, wantedAttrs);
+        relation.print();
+        wantedAttrs.clear();
+        System.out.println("Course names and IDs that no professor teaches");
+        relation = ra.select(course, n -> {
+            List<Cell> temp = new ArrayList<>();
+            for (int i = 0; i < teach.getRows().size(); i++) {
+                temp.add(enrollment.getRows().get(i).get(2));
+            }
+            if (!temp.contains(n.get(0))) {
+                return true;
+            }
+            return false;
+
+        });
+        wantedAttrs.addAll(Arrays.asList("CourseID", "CName"));
+        relation = ra.project(relation, wantedAttrs);
+        relation.print();
+        wantedAttrs.clear();
+        System.out.println("All student names and their IDs who major in computer science who got an 'F'");
+        relation = ra.join(student, enrollment);
+        relation = ra.select(relation, n -> {
+            if (n.get(4).getAsString().equals("computer science")
+                    && n.get(7).getAsString().equals("F")) {
+                return true;
+            }
+            return false;
+
+        });
+        wantedAttrs.addAll(Arrays.asList("StudentID", "LName", "FName"));
+        relation = ra.project(relation, wantedAttrs);
+        relation.print();
+        wantedAttrs.clear();
+        System.out.println("Professor names and their IDs who teach students doing computer science major");
+        relation = ra.join(professor, teach);
+        relation = ra.join(relation, course);
+        relation = ra.join(relation, enrollment);
+        Relation tempRel = ra.select(student, n -> {
+            if (n.get(4).getAsString().equals("computer science")) {
+                return true;
+            }
+            ;
+            return false;
+        });
+        List<Cell> temp = new ArrayList<>();
+        for (int i = 0; i < tempRel.getRows().size(); i++) {
+            temp.add(tempRel.getRows().get(i).get(0));
+        }
+        relation = ra.select(relation, n -> {
+            if (temp.contains(n.get(9))) {
+                return true;
+            }
+            return false;
+        });
+        wantedAttrs.addAll(Arrays.asList("ProfessorID", "FName", "LName"));
+        relation = ra.project(relation, wantedAttrs);
+        relation.print();
+        wantedAttrs.clear();
+        System.out.println("Union between student and student2");
+        Relation student2 = rb.newRelation("student2",
+                Arrays.asList("StudentID", "FName", "LName", "DoB", "Major"),
+                Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING, Type.STRING));
+        relation = ra.union(student, teach);
     }
 }

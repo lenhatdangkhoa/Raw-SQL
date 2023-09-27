@@ -2,19 +2,13 @@ package uga.cs4370.mydb.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 import uga.cs4370.mydb.Cell;
 import uga.cs4370.mydb.Predicate;
 import uga.cs4370.mydb.RA;
 import uga.cs4370.mydb.Relation;
 import uga.cs4370.mydb.RelationBuilder;
 import uga.cs4370.mydb.Type;
-import uga.cs4370.mydb.impl.RelationBuilderImpl;
-import uga.cs4370.mydb.impl.RelationImp;
 
 public class RAImp implements RA {
 
@@ -27,10 +21,9 @@ public class RAImp implements RA {
   public Relation select(Relation rel, Predicate p) {
     RelationBuilder ra = new RelationBuilderImpl();
     Relation relation = ra.newRelation(
-      rel.getName(),
-      rel.getAttrs(),
-      rel.getTypes()
-    );
+        rel.getName(),
+        rel.getAttrs(),
+        rel.getTypes());
     for (List<Cell> list : rel.getRows()) {
       if (p.check(list)) {
         relation.insert(list);
@@ -51,6 +44,7 @@ public class RAImp implements RA {
   public Relation project(Relation rel, List<String> attrs) {
     List<String> attList = rel.getAttrs();
     List<Type> typeList = rel.getTypes();
+
     for (String att : attrs) {
       if (!rel.hasAttr((att))) {
         throw new IllegalArgumentException("Attributes not found");
@@ -84,8 +78,14 @@ public class RAImp implements RA {
       resList.add(ttttInverse);
       i++;
     }
+    List<List<Cell>> finalCheck = new ArrayList<>();
+
     for (List<Cell> temp : resList) {
-      res.insert(temp);
+      if (!finalCheck.contains(temp)) {
+        finalCheck.add(temp);
+        res.insert(temp);
+
+      }
     }
     return res;
   }
@@ -98,23 +98,25 @@ public class RAImp implements RA {
    * @throws IllegalArgumentException If rel1 and rel2 are not compatible.
    */
   public Relation union(Relation rel1, Relation rel2) {
-    if (rel1 == null || rel2 == null) throw new IllegalArgumentException(
-      "Relation is null"
-    ); else if (rel1.getAttrs().size() != rel2.getAttrs().size()) {
+    if (rel1 == null || rel2 == null)
+      throw new IllegalArgumentException(
+          "Relation is null");
+    else if (rel1.getAttrs().size() != rel2.getAttrs().size()) {
       throw new IllegalArgumentException("Relations'length do not match");
     }
 
     RelationBuilder rb = new RelationBuilderImpl();
     Relation relation = rb.newRelation(
-      "New Relation",
-      rel1.getAttrs(),
-      rel1.getTypes()
-    );
+        "New Relation",
+        rel1.getAttrs(),
+        rel1.getTypes());
     for (List<Cell> row : rel1.getRows()) {
-      if (!relation.getRows().contains(row)) relation.insert(row);
+      if (!relation.getRows().contains(row))
+        relation.insert(row);
     }
     for (List<Cell> row : rel2.getRows()) {
-      if (!relation.getRows().contains(row)) relation.insert(row);
+      if (!relation.getRows().contains(row))
+        relation.insert(row);
     }
     return relation;
   }
@@ -127,17 +129,17 @@ public class RAImp implements RA {
    * @throws IllegalArgumentException If rel1 and rel2 are not compatible.
    */
   public Relation diff(Relation rel1, Relation rel2) {
-    if (rel1 == null || rel2 == null) throw new IllegalArgumentException(
-      "Relation is null"
-    ); else if (rel1.getAttrs().size() != rel2.getAttrs().size()) {
+    if (rel1 == null || rel2 == null)
+      throw new IllegalArgumentException(
+          "Relation is null");
+    else if (rel1.getAttrs().size() != rel2.getAttrs().size()) {
       throw new IllegalArgumentException("Relations'length do not match");
     }
     RelationBuilder rb = new RelationBuilderImpl();
     Relation relation = rb.newRelation(
-      "New Relation",
-      rel1.getAttrs(),
-      rel1.getTypes()
-    );
+        "New Relation",
+        rel1.getAttrs(),
+        rel1.getTypes());
     List<List<Cell>> temp = rel1.getRows();
     for (List<Cell> row : rel2.getRows()) {
       if (temp.contains(row)) {
@@ -161,21 +163,18 @@ public class RAImp implements RA {
    *                                  matching argument counts.
    */
   public Relation rename(
-    Relation rel,
-    List<String> origAttr,
-    List<String> renamedAttr
-  ) {
+      Relation rel,
+      List<String> origAttr,
+      List<String> renamedAttr) {
     List<String> rel1 = rel.getAttrs();
-    if (
-      renamedAttr.size() != origAttr.size()
-    ) throw new IllegalArgumentException(
-      "origAttr and renamedAttr do not have matching argument counts."
-    );
+    if (renamedAttr.size() != origAttr.size())
+      throw new IllegalArgumentException(
+          "origAttr and renamedAttr do not have matching argument counts.");
     int i = 0;
     while (i < origAttr.size()) {
-      if (!rel1.contains(origAttr.get(i))) throw new IllegalArgumentException(
-        "attributes in origAttr are not present in rel"
-      );
+      if (!rel1.contains(origAttr.get(i)))
+        throw new IllegalArgumentException(
+            "attributes in origAttr are not present in rel");
       i++;
     }
     int j = 0;
@@ -253,20 +252,17 @@ public class RAImp implements RA {
         indexToRemove = attrs2.indexOf(temp);
         for (List<Cell> row : rel1.getRows()) {
           for (List<Cell> row2 : rel2.getRows()) {
-            if (
-              row
+            if (row
                 .get(attrs.indexOf(temp))
-                .equals(row2.get(attrs2.indexOf(temp)))
-            ) {
+                .equals(row2.get(attrs2.indexOf(temp)))) {
               List<Cell> newList = new ArrayList<>();
               for (Cell cell : row2) {
-                if (!row2.get(attrs2.indexOf(temp)).equals(cell)) newList.add(
-                  cell
-                );
+                if (!row2.get(attrs2.indexOf(temp)).equals(cell))
+                  newList.add(
+                      cell);
               }
               common1.add(row);
               common2.add(newList);
-              System.out.println(newList);
             }
           }
         }
@@ -276,8 +272,6 @@ public class RAImp implements RA {
     newTypes.remove(indexToRemove);
     attrs.addAll(attrs2);
     bigTypes.addAll(newTypes);
-    System.out.println(common1);
-    System.out.println(common2);
     List<List<Cell>> finalRes = new ArrayList<>();
     for (int i = 0; i < common1.size(); i++) {
       List<Cell> temp = new ArrayList<>();
@@ -306,7 +300,6 @@ public class RAImp implements RA {
     List<Type> types1 = rel1.getTypes();
     List<Type> types2 = rel2.getTypes();
     types1.addAll(types2);
-    // List<List<Cell>> newList = new ArrayList<>();
     RelationBuilder ra = new RelationBuilderImpl();
     Relation relation = ra.newRelation("New Relation", attrs1, types1);
     for (List<Cell> row1 : rel1.getRows()) {

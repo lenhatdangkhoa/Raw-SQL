@@ -14,10 +14,14 @@ public class RelationImp implements Relation {
     public int size = 0;
     public HashMap<String, HashMap<Type, List<Cell>>> table;
 
+    // Constructor
     public RelationImp() {
         table = new LinkedHashMap<>();
     }
 
+    /**
+     * Returns the name of the relation.
+     */
     @Override
     public String getName() {
         return name;
@@ -32,11 +36,19 @@ public class RelationImp implements Relation {
         this.name = name;
     }
 
+    /**
+     * Returns the row count of the relation.
+     */
     @Override
     public int getSize() {
         return size;
     }
 
+    /**
+     * Get the rows of the relation.
+     * Return a deep copy of the rows to avoid
+     * modifications to the rows by the callers of this method.
+     */
     @Override
     public List<List<Cell>> getRows() {
         List<List<Cell>> deepCopy = new ArrayList<List<Cell>>();
@@ -55,6 +67,9 @@ public class RelationImp implements Relation {
         return deepCopy;
     }
 
+    /**
+     * Return the type of each column in a list.
+     */
     @Override
     public List<Type> getTypes() {
         List<Type> types = new ArrayList<>();
@@ -66,6 +81,9 @@ public class RelationImp implements Relation {
         return types;
     }
 
+    /**
+     * Returns the list of attributes of the relation.
+     */
     @Override
     public List<String> getAttrs() {
         List<String> list = new ArrayList<>();
@@ -75,11 +93,20 @@ public class RelationImp implements Relation {
         return list;
     }
 
+    /**
+     * Returns true only if attr exist in the relation.
+     */
     @Override
     public boolean hasAttr(String attr) {
         return table.containsKey(attr);
     }
 
+    /**
+     * Returns the index of the attr.
+     *
+     * @throws IllegalArgumentException if attr does not
+     *                                  exist in the relation.
+     */
     @Override
     public int getAttrIndex(String attr) {
         int i = 0;
@@ -92,6 +119,13 @@ public class RelationImp implements Relation {
         throw new IllegalArgumentException("no attr");
     }
 
+    /**
+     * Inserts a row in the relation.
+     *
+     * @throws IllegalArgumentException if the cell types do not correspond
+     *                                  to the attibute types of the relation or if
+     *                                  the row already exists.
+     */
     @Override
     public void insert(Cell... cells) {
         List<Cell> list = new ArrayList<>();
@@ -101,10 +135,16 @@ public class RelationImp implements Relation {
         this.insert(list);
     }
 
+    /**
+     * Inserts a row in the relation.
+     *
+     * @throws IllegalArgumentException if the cell types do not correspond
+     *                                  to the attibute types of the relation or if
+     *                                  the row already exists.
+     */
     @Override
     public void insert(List<Cell> cells) {
         List<Type> types = this.getTypes();
-
         if (cells.size() != types.size())
             throw new IllegalArgumentException(
                     "Size of cells does not match size of attributes");
@@ -178,6 +218,11 @@ public class RelationImp implements Relation {
 
     }
 
+    /**
+     * Print the relation properly formatted as a table
+     * to the standard ouput.
+     * The result should look similar to MySql table outputs.
+     */
     @Override
     public void print() {
         System.out.print("|");
