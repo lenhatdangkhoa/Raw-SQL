@@ -156,14 +156,26 @@ public class RelationImp implements Relation {
                 temp.put(type, tempList);
                 j++;
             }
+
             table.put(key, temp);
+
         }
+
         for (HashMap<Type, List<Cell>> map : table.values()) {
             for (Type type : map.keySet()) {
                 this.size = map.get(type).size();
                 break;
             }
         }
+        List<List<Cell>> tempRows = new ArrayList<>();
+        for (List<Cell> row : this.getRows()) {
+            if (tempRows.contains(row)) {
+                throw new IllegalArgumentException("Duplicate rows");
+            } else {
+                tempRows.add(row);
+            }
+        }
+
     }
 
     @Override
