@@ -202,7 +202,13 @@ public class RAImp implements RA {
         List<String> newAttr = rel1.getAttrs();
         List<Type> types = rel1.getTypes();
         for (String temp : rel2.getAttrs()) {
-            newAttr.add(temp);
+            if (newAttr.contains(temp)) {
+                newAttr.set(newAttr.indexOf(temp), temp + "OF" + rel1.getName());
+                newAttr.add(temp + "OF" + rel2.getName());
+            } else {
+                newAttr.add(temp);
+            }
+
         }
         for (Type type : rel2.getTypes()) {
             types.add(type);
@@ -219,15 +225,11 @@ public class RAImp implements RA {
         }
 
         RelationBuilder ra = new RelationBuilderImpl();
-        System.out.println(types);
         Relation relation = ra.newRelation("New Relation", newAttr, types);
-        // System.out.println(types.size());
-        // System.out.println(newAttr.size());
+
         for (List<Cell> tempList : bigList) {
-            // System.out.println(tempList.size());
             relation.insert(tempList);
         }
-        // relation.print();
         return relation;
     }
 
@@ -237,7 +239,59 @@ public class RAImp implements RA {
      * @return The resulting relation after applying natural join.
      */
     public Relation join(Relation rel1, Relation rel2) {
-        return null;
+        List<String> attrs = rel1.getAttrs();
+        List<String> attrs2 = rel2.getAttrs();
+        List<Type> newTypes = rel2.getTypes();
+        List<Type> bigTypes = rel1.getTypes();
+        List<List<Cell>> common1 = new ArrayList<>();
+        List<List<Cell>> common2 = new ArrayList<>();
+        String toRemove = "";
+        int indexToRemove = 0;
+        for (String temp : attrs2) {
+            if (attrs.contains(temp)) {
+                toRemove = temp;
+                indexToRemove = attrs2.indexOf(temp);
+                for (List<Cell> row : rel1.getRows()) {
+                    for (List<Cell> row2 : rel2.getRows()) {
+                        System.out.println(row.get(attrs.indexOf(temp)));
+                        System.out.println(row2.get(attrs2.indexOf(temp)));
+
+                        if (row.get(attrs.indexOf(temp)).equals(row2.get(attrs2.indexOf(temp)))) {
+                            List<Cell> newList = new ArrayList<>();
+                            for (Cell cell : row2) {
+                                if (!row2.get(attrs2.indexOf(temp)).equals(cell))
+                                    newList.add(cell);
+                            }
+                            common1.add(row);
+                            common2.add(newList);
+                            System.out.println(newList);
+                        }
+                    }
+                }
+
+            }
+
+        }
+        attrs2.remove(toRemove);
+        newTypes.remove(indexToRemove);
+        attrs.addAll(attrs2);
+        bigTypes.addAll(newTypes);
+        System.out.println(common1);
+        System.out.println(common2);
+        List<List<Cell>> finalRes = new ArrayList<>();
+        for (int i = 0; i < common1.size(); i++) {
+            List<Cell> temp = new ArrayList<>();
+            temp.addAll(common1.get(i));
+            temp.addAll(common2.get(i));
+            finalRes.add(temp);
+        }
+
+        RelationBuilder ra = new RelationBuilderImpl();
+        Relation res = ra.newRelation("New Relation", attrs, bigTypes);
+        for (List<Cell> row : finalRes) {
+            res.insert(row);
+        }
+        return res;
     }
 
     /**

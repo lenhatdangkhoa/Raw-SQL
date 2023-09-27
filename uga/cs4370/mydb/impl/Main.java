@@ -21,12 +21,12 @@ public class Main {
   public static void main(String args[]) {
     RelationBuilder rb = new RelationBuilderImpl();
     Relation rel = rb.newRelation(
-        "students",
+        "rel1",
         Arrays.asList("ID", "fname", "lname", "major"),
         Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
     Relation rel2 = rb.newRelation(
-        "students",
-        Arrays.asList("ID", "fname", "lname", "year"),
+        "rel2",
+        Arrays.asList("ID", "wname", "bname", "year"),
         Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
     List<Cell> list1 = new ArrayList<>();
     list1.add(new Cell(1));
@@ -45,12 +45,14 @@ public class Main {
         new Cell("Roney"),
         new Cell("Gage"),
         new Cell("Men's Studies"));
-    rel2.insert(new Cell(5), new Cell("Dad"), new Cell("nihao"), new Cell("2023"));
+    rel2.insert(new Cell(1), new Cell("Dad"), new Cell("nihao"), new Cell("2023"));
     rel2.insert(new Cell(6), new Cell("Mom"), new Cell("zhizheng"), new Cell("2019"));
+    rel2.insert(new Cell(1), new Cell("Kid"), new Cell("Pao"), new Cell("2018"));
+
     rel.print();
     rel2.print();
     RA ra = new RAImp();
-    Relation rel3 = ra.cartesianProduct(rel, rel2);
+    Relation rel3 = ra.join(rel, rel2);
     rel3.print();
   }
 }
