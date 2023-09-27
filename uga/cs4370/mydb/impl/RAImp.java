@@ -253,9 +253,6 @@ public class RAImp implements RA {
                 indexToRemove = attrs2.indexOf(temp);
                 for (List<Cell> row : rel1.getRows()) {
                     for (List<Cell> row2 : rel2.getRows()) {
-                        System.out.println(row.get(attrs.indexOf(temp)));
-                        System.out.println(row2.get(attrs2.indexOf(temp)));
-
                         if (row.get(attrs.indexOf(temp)).equals(row2.get(attrs2.indexOf(temp)))) {
                             List<Cell> newList = new ArrayList<>();
                             for (Cell cell : row2) {
@@ -300,6 +297,26 @@ public class RAImp implements RA {
      * @return The resulting relation after applying theta join.
      */
     public Relation join(Relation rel1, Relation rel2, Predicate p) {
-        return null;
+        List<String> attrs1 = rel1.getAttrs();
+        List<String> attrs2 = rel2.getAttrs();
+        attrs1.addAll(attrs2);
+        List<Type> types1 = rel1.getTypes();
+        List<Type> types2 = rel2.getTypes();
+        types1.addAll(types2);
+        // List<List<Cell>> newList = new ArrayList<>();
+        RelationBuilder ra = new RelationBuilderImpl();
+        Relation relation = ra.newRelation("New Relation", attrs1, types1);
+        for (List<Cell> row1 : rel1.getRows()) {
+            for (List<Cell> row2 : rel2.getRows()) {
+                List<Cell> temp = new ArrayList<>();
+                temp.addAll(row1);
+                temp.addAll(row2);
+                if (p.check(temp)) {
+                    relation.insert(temp);
+                }
+            }
+        }
+
+        return relation;
     }
 }

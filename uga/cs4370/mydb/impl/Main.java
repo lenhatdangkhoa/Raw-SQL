@@ -9,6 +9,7 @@ import uga.cs4370.mydb.Relation;
 import uga.cs4370.mydb.RelationBuilder;
 import uga.cs4370.mydb.Type;
 import uga.cs4370.mydb.impl.RAImp;
+import uga.cs4370.mydb.Predicate;
 
 /*After completing the implementation, you should create the schema from Assignment 1 using
 your own 'mydb' implementation and insert sample data into the schema. Then, implement the
@@ -22,37 +23,43 @@ public class Main {
     RelationBuilder rb = new RelationBuilderImpl();
     Relation rel = rb.newRelation(
         "rel1",
-        Arrays.asList("ID", "fname", "lname", "major"),
-        Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
+        Arrays.asList("ID", "Name", "Std"),
+        Arrays.asList(Type.INTEGER, Type.STRING, Type.INTEGER));
     Relation rel2 = rb.newRelation(
         "rel2",
-        Arrays.asList("ID", "wname", "bname", "year"),
-        Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
+        Arrays.asList("Class", "Subject"),
+        Arrays.asList(Type.INTEGER, Type.STRING));
     List<Cell> list1 = new ArrayList<>();
-    list1.add(new Cell(1));
+    list1.add(new Cell(101));
     list1.add(new Cell("Le"));
-    list1.add(new Cell("Khoa"));
-    list1.add(new Cell("Computer Science"));
+    list1.add(new Cell(10));
     rel.insert(list1);
     List<Cell> list2 = new ArrayList<>();
-    list2.add(new Cell(2));
+    list2.add(new Cell(102));
     list2.add(new Cell("Tran"));
-    list2.add(new Cell("Steven"));
-    list2.add(new Cell("Women's Studies"));
+    list2.add(new Cell(11));
     rel.insert(list2);
-    rel.insert(
-        new Cell(3),
-        new Cell("Roney"),
-        new Cell("Gage"),
-        new Cell("Men's Studies"));
-    rel2.insert(new Cell(1), new Cell("Dad"), new Cell("nihao"), new Cell("2023"));
-    rel2.insert(new Cell(6), new Cell("Mom"), new Cell("zhizheng"), new Cell("2019"));
-    rel2.insert(new Cell(1), new Cell("Kid"), new Cell("Pao"), new Cell("2018"));
+    rel2.insert(new Cell(10), new Cell("English"));
+    rel2.insert(new Cell(10), new Cell("Math"));
+    rel2.insert(new Cell(11), new Cell("Comp"));
+    rel2.insert(new Cell(11), new Cell("Music"));
 
     rel.print();
     rel2.print();
     RA ra = new RAImp();
-    Relation rel3 = ra.join(rel, rel2);
+    Relation rel3 = ra.join(rel, rel2, row -> {
+      Cell cell1 = row.get(2);
+      Cell cell2 = row.get(3);
+      // System.out.println(cell1);
+      // System.out.println(cell2);
+
+      if (cell1.equals(cell2)) {
+        return true;
+      }
+      return false;
+    });
+
     rel3.print();
+
   }
 }
