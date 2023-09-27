@@ -8,7 +8,6 @@ import uga.cs4370.mydb.RA;
 import uga.cs4370.mydb.Relation;
 import uga.cs4370.mydb.RelationBuilder;
 import uga.cs4370.mydb.Type;
-import uga.cs4370.mydb.Predicate;
 
 /*After completing the implementation, you should create the schema from Assignment 1 using
 your own 'mydb' implementation and insert sample data into the schema. Then, implement the
@@ -264,10 +263,6 @@ public class Main {
         relation = ra.project(relation, wantedAttrs);
         relation.print();
         wantedAttrs.clear();
-        System.out.println("Union between student and student2");
-        Relation student2 = rb.newRelation("student2",
-                Arrays.asList("StudentID", "FName", "LName", "DoB", "Major"),
-                Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING, Type.STRING));
-        relation = ra.union(student, teach);
+
     }
 }

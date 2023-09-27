@@ -294,22 +294,25 @@ public class RAImp implements RA {
    * @return The resulting relation after applying theta join.
    */
   public Relation join(Relation rel1, Relation rel2, Predicate p) {
-    List<String> attrs1 = rel1.getAttrs();
-    List<String> attrs2 = rel2.getAttrs();
-    attrs1.addAll(attrs2);
-    List<Type> types1 = rel1.getTypes();
-    List<Type> types2 = rel2.getTypes();
-    types1.addAll(types2);
-    RelationBuilder ra = new RelationBuilderImpl();
-    Relation relation = ra.newRelation("New Relation", attrs1, types1);
-    for (List<Cell> row1 : rel1.getRows()) {
-      for (List<Cell> row2 : rel2.getRows()) {
-        List<Cell> temp = new ArrayList<>();
-        temp.addAll(row1);
-        temp.addAll(row2);
-        if (p.check(temp)) {
-          relation.insert(temp);
-        }
+    // List<String> attrs1 = rel1.getAttrs();
+    // List<String> attrs2 = rel2.getAttrs();
+    // attrs1.addAll(attrs2);
+    // List<Type> types1 = rel1.getTypes();
+    // List<Type> types2 = rel2.getTypes();
+    // types1.addAll(types2);
+    RelationBuilder rb = new RelationBuilderImpl();
+    Relation relationTemp = join(rel1, rel2);
+    Relation relation = rb.newRelation("New Relation", relationTemp.getAttrs(), relationTemp.getTypes());
+
+    for (List<Cell> row1 : relationTemp.getRows()) {
+      // for (List<Cell> row2 : rel2.getRows()) {
+      // List<Cell> temp = new ArrayList<>();
+      // temp.addAll(row1);
+      // temp.addAll(row2);
+      // System.out.println(temp);
+      if (p.check(row1)) {
+        relation.insert(row1);
+        // }
       }
     }
 
