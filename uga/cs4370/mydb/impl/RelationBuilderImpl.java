@@ -16,6 +16,7 @@ public class RelationBuilderImpl implements RelationBuilder {
             throw new IllegalArgumentException("Wrong format for attributes and types");
         else if (!checkValidity(attrs))
             throw new IllegalArgumentException("include non alphanumerical characters");
+
         else if (attrs.size() != types.size())
             throw new IllegalArgumentException("attributes and types's length don't match");
         RelationImp rel = new RelationImp();
