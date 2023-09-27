@@ -104,6 +104,9 @@ public class RelationImp implements Relation {
     @Override
     public void insert(List<Cell> cells) {
         List<Type> types = this.getTypes();
+        // System.out.println(cells.size());
+        System.out.println(types.size());
+
         if (cells.size() != types.size())
             throw new IllegalArgumentException(
                     "Size of cells does not match size of attributes");

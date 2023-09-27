@@ -21,15 +21,13 @@ public class Main {
   public static void main(String args[]) {
     RelationBuilder rb = new RelationBuilderImpl();
     Relation rel = rb.newRelation(
-      "students",
-      Arrays.asList("ID", "fname", "lname", "major"),
-      Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING)
-    );
+        "students",
+        Arrays.asList("ID", "fname", "lname", "major"),
+        Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
     Relation rel2 = rb.newRelation(
-      "students",
-      Arrays.asList("ID", "fname", "lname", "major"),
-      Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING)
-    );
+        "students",
+        Arrays.asList("ID", "fname", "lname", "year"),
+        Arrays.asList(Type.INTEGER, Type.STRING, Type.STRING, Type.STRING));
     List<Cell> list1 = new ArrayList<>();
     list1.add(new Cell(1));
     list1.add(new Cell("Le"));
@@ -43,29 +41,16 @@ public class Main {
     list2.add(new Cell("Women's Studies"));
     rel.insert(list2);
     rel.insert(
-      new Cell(3),
-      new Cell("Roney"),
-      new Cell("Gage"),
-      new Cell("Men's Studies")
-    );
-
-    List<Cell> list3 = new ArrayList<>();
-    list3.add(new Cell(4));
-    list3.add(new Cell("Nega"));
-    list3.add(new Cell("Le"));
-    list3.add(new Cell("Basketball"));
-    rel2.insert(list3);
-    List<Cell> list4 = new ArrayList<>();
-    list4.add(new Cell(3));
-    list4.add(new Cell("Roney"));
-    list4.add(new Cell("Gage"));
-    list4.add(new Cell("Men's Studies"));
-    rel2.insert(list4);
+        new Cell(3),
+        new Cell("Roney"),
+        new Cell("Gage"),
+        new Cell("Men's Studies"));
+    rel2.insert(new Cell(5), new Cell("Dad"), new Cell("nihao"), new Cell("2023"));
+    rel2.insert(new Cell(6), new Cell("Mom"), new Cell("zhizheng"), new Cell("2019"));
+    rel.print();
+    rel2.print();
     RA ra = new RAImp();
-    List<String> attrs = new ArrayList<>();
-    attrs.add("fname");
-    attrs.add("lname");
-    Relation test = ra.project(rel, attrs);
-    test.print();
+    Relation rel3 = ra.cartesianProduct(rel, rel2);
+    rel3.print();
   }
 }
